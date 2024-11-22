@@ -19,15 +19,19 @@ Bus 007 Device 002: ID 046d:085f Logitech, Inc. PTZ Pro 2
     wget https://github.com/bluenviron/mediamtx/releases/download/v1.9.3/mediamtx_v1.9.3_linux_amd64.tar.gz
     tar -xvf mediamtx_v1.9.3_linux_amd64.tar.gz
     ```
-2. `ffmpeg` script
+2. Install packages
     ```
-    sudo apt install ffmpeg
+    sudo apt install ffmpeg v4l-utils python3-pip python3-venv
     ```
 3. python dependency
     ```
     python3 -m venv .venv
     source .venv/bin/activate
     pip3 install -r requirements.txt
+    ```
+4. Connect the camera and set permission
+    ```
+    chmod 666 /dev/video0
     ```
 
 ## Run
