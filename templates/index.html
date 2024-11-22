@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTZ Camera Control</title>
+</head>
+<body>
+    <h1>PTZ Camera Control</h1>
+
+    <!-- Embed the stream using the dynamically injected IP address -->
+    <iframe
+        id="video-stream"
+        src="http://{{ server_ip }}:8889/live"
+        width="640"
+        height="360"
+        frameborder="0"
+        allowfullscreen
+    ></iframe>
+
+    <!-- PTZ Control Buttons -->
+    <div>
+        <button onmousedown="onButtonPress('up')" onmouseup="onButtonRelease('up')">Up</button>
+        <button onmousedown="onButtonPress('down')" onmouseup="onButtonRelease('down')">Down</button>
+        <button onmousedown="onButtonPress('left')" onmouseup="onButtonRelease('left')">Left</button>
+        <button onmousedown="onButtonPress('right')" onmouseup="onButtonRelease('right')">Right</button>
+    </div>
+
+    <!-- Zoom Slider -->
+    <div>
+        <label for="zoom-slider">Zoom:</label>
+        <input type="range" id="zoom-slider" min="100" max="500" step="10" value="300" oninput="onZoomChange(this.value)">
+    </div>
+
+    <script>
+        async function sendCommand(direction, action) {
+            try {
+                const response = await fetch("/control", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `direction=${direction}&action=${action}`
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(`${direction} (${action}) command sent:`, data.result);
+                } else {
+                    console.error(`Failed to send ${direction} (${action}) command.`);
+                }
+            } catch (error) {
+                console.error("Error sending command:", error);
+            }
+        }
+
+        function onButtonPress(direction) {
+            sendCommand(direction, "start");
+        }
+
+        function onButtonRelease(direction) {
+            sendCommand(direction, "stop");
+        }
+
+        function onZoomChange(value) {
+            sendCommand("zoom", value); // Send zoom level directly
+        }
+    </script>
+</body>
+</html>
