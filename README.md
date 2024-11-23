@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Connect Logitech PTZ Pro 2 (`lsusb` shows ID 046d:085f) to a Linux PC, stream video to an WebRTC server, host a web page so that using a browser one can view the stream and pan / tilt / zoom the view.
+Connect Logitech PTZ Pro 2 (`lsusb` shows ID 046d:085f) to a Linux PC, stream video (via `ffmpeg`) to a WebRTC server (via `mediamtx`), host a web page (via `flask`) so that using a browser one can view the stream and pan / tilt / zoom the view (via `v4l`).
 
 
 ## Requirement
