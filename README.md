@@ -31,11 +31,11 @@ Bus 007 Device 002: ID 046d:085f Logitech, Inc. PTZ Pro 2
     ```
 4. Connect the camera and set permission
     ```
-    chmod 666 /dev/video0
+    sudo chmod 666 /dev/video0
     ```
 
 ## Run
-Run all three part in this above order in seperate sessions
+Run all three parts in this order in seperate sessions (I use `screen` but a `docker-compose` would be a better solution)
 ```
 ./mediamtx
 ```
