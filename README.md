@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Connect Logitech PTZ Pro 2 of following model to Linux PC, creates a web page so any one on the same network can open a browser to view the stream and pan tilt and zoom the view.
+Connect Logitech PTZ Pro 2 (`lsusb` shows ID 046d:085f) to a Linux PC, stream video to an WebRTC server, host a web page so that using a browser one can view the stream and pan / tilt / zoom the view.
 
 
 ## Requirement
@@ -47,3 +47,7 @@ source .venv/bin/activate
 python3 ptzcam.py
 ```
 Then open a web browser with `http://<server_ip>:5000` to view the results.
+
+## Next
+
+put this in a container...
