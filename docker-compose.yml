@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  ptz-control:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    network_mode: "host"
+   # ports:
+   #y   - "5000:5000" # Flask app
+    devices:
+      - "/dev/video0:/dev/video0" # Access the host camera
+    volumes:
+      - "./logs:/app/logs" # Optional: Logs directory
+    environment:
+      - FLASK_ENV=production
+
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    container_name: mediamtx
+    ports:
+      - "8888:8888" # HLS port
+      - "8889:8889" # WebRTC port
+    volumes:
+      - "./mediamtx.yml:/config/mediamtx.yml" # Custom MediaMTX configuration
+
+  ffmpeg:
+    image: jrottenberg/ffmpeg:latest
+    container_name: ffmpeg
+    command: >
+      -f v4l2 -input_format mjpeg -video_size 1280x720 -framerate 30 -i /dev/video0 -vcodec libx264 -preset ultrafast -tune zerolatency -pix_fmt yuv420p -f rtsp rtsp://mediamtx:8554/live
+#      -re -f v4l2 -i /dev/video0
+#      -vcodec libx264 -preset veryfast -tune zerolatency
+#      -pix_fmt yuv420p -f rtsp rtsp://mediamtx:8554/live
+    devices:
+      - "/dev/video0:/dev/video0" # Access the host camera
+

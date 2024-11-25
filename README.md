@@ -9,7 +9,21 @@ Connect Logitech PTZ Pro 2 (`lsusb` shows ID 046d:085f) to a Linux PC, stream vi
 `lsusb` shows following ID
 ```
 Bus 007 Device 002: ID 046d:085f Logitech, Inc. PTZ Pro 2
+
 ```
+
+## Container
+
+```
+docker-compose build
+docker-compose up
+
+```
+will bring up everything.
+
+Then open a web browser with `http://<server_ip>:5000` to view the results.
+
+If interested in details, continue to following sections...
 
 ## Install
 
@@ -35,6 +49,7 @@ Bus 007 Device 002: ID 046d:085f Logitech, Inc. PTZ Pro 2
     ```
 
 ## Run
+
 Run all three parts in this order in seperate sessions (I use `screen` but a `docker-compose` would be a better solution)
 ```
 ./mediamtx
@@ -46,8 +61,3 @@ Run all three parts in this order in seperate sessions (I use `screen` but a `do
 source .venv/bin/activate
 python3 ptzcam.py
 ```
-Then open a web browser with `http://<server_ip>:5000` to view the results.
-
-## Next
-
-put this in a container...
