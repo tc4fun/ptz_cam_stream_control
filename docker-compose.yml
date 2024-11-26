@@ -14,6 +14,7 @@ services:
       - "./logs:/app/logs" # Optional: Logs directory
     environment:
       - FLASK_ENV=production
+    restart: always
 
   mediamtx:
     image: bluenviron/mediamtx:latest
@@ -23,6 +24,7 @@ services:
       - "8889:8889" # WebRTC port
     volumes:
       - "./mediamtx.yml:/config/mediamtx.yml" # Custom MediaMTX configuration
+    restart: always
 
   ffmpeg:
     image: jrottenberg/ffmpeg:latest
@@ -34,4 +36,4 @@ services:
 #      -pix_fmt yuv420p -f rtsp rtsp://mediamtx:8554/live
     devices:
       - "/dev/video0:/dev/video0" # Access the host camera
-
+    restart: always
