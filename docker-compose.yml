@@ -14,7 +14,7 @@ services:
       - "./logs:/app/logs" # Optional: Logs directory
     environment:
       - FLASK_ENV=production
-    restart: always
+    #restart: always
 
   mediamtx:
     image: bluenviron/mediamtx:latest
@@ -25,17 +25,25 @@ services:
 #      - "8889:8889" # WebRTC port
     volumes:
       - "./mediamtx.yml:/config/mediamtx.yml" # Custom MediaMTX configuration
-    restart: always
+    #restart: always
 
   ffmpeg:
     image: jrottenberg/ffmpeg:latest
     container_name: ffmpeg
-    command: >
-      -f v4l2 -input_format mjpeg -video_size 1280x720 -framerate 30 -i /dev/video0 -vcodec libx264 -preset ultrafast -tune zerolatency -pix_fmt yuv420p -f rtsp rtsp://127.0.0.1:8554/live
-#      -re -f v4l2 -i /dev/video0
-#      -vcodec libx264 -preset veryfast -tune zerolatency
-#      -pix_fmt yuv420p -f rtsp rtsp://mediamtx:8554/live
+    volumes:
+      - "./start-ffmpeg.sh:/start-ffmpeg.sh"  # Mount the startup script
     devices:
-      - "/dev/video0:/dev/video0" # Access the host camera
-    restart: always
+      - "/dev/video0:/dev/video0"
+    privileged: true  # Ensure access to devices
+    entrypoint: ["/bin/bash", "/start-ffmpeg.sh"]  # Use the retry script
     network_mode: "host"
+
+  # ffmpeg:
+  #   image: jrottenberg/ffmpeg:latest
+  #   container_name: ffmpeg
+  #   command: >
+  #     -f v4l2 -input_format mjpeg -video_size 800x450 -framerate 30 -i /dev/video0 -vcodec libx264 -preset ultrafast -tune zerolatency -pix_fmt yuv420p -f rtsp rtsp://127.0.0.1:8554/live
+  #   devices:
+  #     - "/dev/video0:/dev/video0" # Access the host camera
+  #   restart: always
+  #   network_mode: "host"
